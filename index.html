@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ton bilan de sprint — Myriam | ELUMA</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #1a1a2e;
+      --bg2:    #16213e;
+      --bg3:    #0f1120;
+      --gold:   #C8A96E;
+      --gold2:  #dcc48e;
+      --white:  #f5f0e8;
+      --muted:  #8a8fa8;
+      --border: rgba(200, 169, 110, 0.18);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      padding-bottom: 64px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .logo-sep { width: 1px; height: 22px; background: var(--border); }
+    .logo-sub { font-size: 13px; color: var(--muted); }
+
+    /* ── Main ── */
+    main { max-width: 660px; margin: 0 auto; padding: 44px 24px 0; }
+
+    /* ── Intro block ── */
+    .intro-block { margin-bottom: 36px; }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(22px, 4.5vw, 30px);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+    h1 span { color: var(--gold); }
+
+    .intro-text {
+      background: var(--bg2);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      font-size: 15px;
+      color: #c0c4d6;
+      line-height: 1.75;
+    }
+
+    /* ── Form card ── */
+    .form-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 32px;
+    }
+
+    .field { margin-bottom: 24px; }
+    .field:last-of-type { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    label .hint {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      text-transform: none;
+      letter-spacing: 0;
+      margin-top: 2px;
+    }
+
+    textarea, input[type="number"] {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--white);
+      font-size: 15px;
+      font-family: inherit;
+      line-height: 1.6;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea { resize: vertical; }
+    textarea:focus, input[type="number"]:focus { border-color: var(--gold); }
+    textarea::placeholder { color: var(--muted); font-size: 14px; }
+
+    input[type="number"] {
+      width: 100px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { opacity: 1; }
+
+    .motivation-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .motivation-scale {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* File upload */
+    .file-zone {
+      position: relative;
+      background: var(--bg3);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .file-zone:hover, .file-zone.over {
+      border-color: var(--gold);
+      background: rgba(200, 169, 110, 0.04);
+    }
+    .file-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .file-icon { font-size: 30px; margin-bottom: 8px; }
+    .file-desc { font-size: 14px; color: var(--muted); }
+    .file-desc strong { color: var(--gold); }
+
+    .file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .file-item {
+      background: rgba(200,169,110,0.07);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .file-item::before { content: '📎'; }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: #1a1a2e;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      border: none;
+      border-radius: 8px;
+      padding: 15px 24px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 28px;
+      letter-spacing: 0.02em;
+    }
+    .btn-submit:hover  { background: var(--gold2); }
+    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Confirmation */
+    .confirmation {
+      display: none;
+      text-align: center;
+      padding: 52px 24px;
+    }
+    .confirmation.visible { display: block; }
+    .conf-icon  { font-size: 56px; margin-bottom: 20px; }
+    .conf-title {
+      font-family: Georgia, serif;
+      font-size: 26px;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .conf-text { font-size: 15px; color: #c0c4d6; max-width: 400px; margin: 0 auto; line-height: 1.75; }
+
+    /* Footer */
+    footer {
+      margin-top: 52px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .form-card { padding: 24px 18px; }
+      main { padding: 28px 16px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">ELUMA</div>
+    <div class="logo-sep"></div>
+    <div class="logo-sub">Bilan de sprint · Myriam</div>
+  </header>
+
+  <main>
+
+    <div class="intro-block">
+      <h1>Myriam —<br><span>Ton bilan de sprint.</span></h1>
+      <div class="intro-text">
+        Avant qu'on se parle, j'ai besoin de voir où tu en es vraiment. Pas de jugement. Dis-moi honnêtement ce qui s'est passé, ce que tu as fait, ce qui a bloqué. C'est ça qui va nous permettre de repartir sur de bonnes bases.
+      </div>
+    </div>
+
+    <div class="form-card">
+
+      <form
+        id="bilan-form"
+        method="POST"
+        action=""
+        data-netlify="true"
+        name="bilan-myriam"
+        enctype="multipart/form-data"
+      >
+        <input type="hidden" name="form-name" value="bilan-myriam" />
+
+        <div class="field">
+          <label for="produit">
+            Ce que tu as produit jusqu'ici
+            <span class="hint">Tout compte — même incomplet, même brouillon</span>
+          </label>
+          <textarea
+            id="produit"
+            name="produit"
+            rows="5"
+            placeholder="Persona, offre, positionnement, notes d'appels... liste tout, même si c'est incomplet"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="bien_marche">Ce qui a bien marché</label>
+          <textarea
+            id="bien_marche"
+            name="bien_marche"
+            rows="3"
+            placeholder="Qu'est-ce qui t'a semblé fluide, évident, ou satisfaisant ?"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="bloquant">
+            Ce qui t'a bloqué ou n'était pas clair
+            <span class="hint">Sois précise — c'est exactement ce dont j'ai besoin</span>
+          </label>
+          <textarea
+            id="bloquant"
+            name="bloquant"
+            rows="4"
+            placeholder="Sois précise — c'est exactement ce dont j'ai besoin"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="motivation">Ta motivation aujourd'hui sur 10</label>
+          <div class="motivation-wrap">
+            <input
+              type="number"
+              id="motivation"
+              name="motivation"
+              min="1"
+              max="10"
+              placeholder="—"
+            />
+            <div class="motivation-scale">1 = à plat<br>10 = prête à tout</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>
+            Tes documents de travail
+            <span class="hint">Upload tout ce que tu as produit — même brouillon, même incomplet</span>
+          </label>
+          <div class="file-zone" id="file-zone">
+            <input
+              type="file"
+              id="fichiers"
+              name="fichiers"
+              multiple
+              accept="*/*"
+            />
+            <div class="file-icon">📂</div>
+            <div class="file-desc">
+              <strong>Clique ou glisse tes fichiers ici</strong><br>
+              PDF, Word, photos, notes — tout format accepté
+            </div>
+          </div>
+          <div class="file-list" id="file-list"></div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">
+          Envoyer mon bilan →
+        </button>
+
+      </form>
+
+      <div class="confirmation" id="confirmation">
+        <div class="conf-icon">✅</div>
+        <div class="conf-title">Reçu, Myriam.</div>
+        <p class="conf-text">
+          Ton bilan est bien arrivé. Je le lis avant notre call et on repart de là ensemble.<br><br>
+          <span style="color: var(--muted); font-size: 13px;">Tu peux fermer cette page.</span>
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    ELUMA — Confidentiel. Ces informations restent entre Myriam et Mehdi.
+  </footer>
+
+  <script>
+    // File zone
+    const fileInput = document.getElementById('fichiers');
+    const fileList  = document.getElementById('file-list');
+    const zone      = document.getElementById('file-zone');
+
+    fileInput.addEventListener('change', () => renderFiles(fileInput.files));
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      fileInput.files = e.dataTransfer.files;
+      renderFiles(e.dataTransfer.files);
+    });
+
+    function renderFiles(files) {
+      fileList.innerHTML = '';
+      Array.from(files).forEach(f => {
+        const el = document.createElement('div');
+        el.className = 'file-item';
+        el.textContent = f.name + '  (' + fmt(f.size) + ')';
+        fileList.appendChild(el);
+      });
+    }
+
+    function fmt(b) {
+      if (b < 1024)      return b + ' o';
+      if (b < 1048576)   return (b/1024).toFixed(0) + ' Ko';
+      return (b/1048576).toFixed(1) + ' Mo';
+    }
+
+    // Submit
+    const form    = document.getElementById('bilan-form');
+    const confirm = document.getElementById('confirmation');
+    const btn     = document.getElementById('btn-submit');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      btn.disabled    = true;
+      btn.textContent = 'Envoi en cours…';
+      try {
+        await fetch('/', { method: 'POST', body: new FormData(form) });
+      } catch (_) { /* Netlify redirect = fetch throws, submission ok */ }
+      form.style.display = 'none';
+      confirm.classList.add('visible');
+    });
+  </script>
+
+</body>
+</html>
